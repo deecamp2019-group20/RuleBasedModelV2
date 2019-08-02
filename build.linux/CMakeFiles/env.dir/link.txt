@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared  -o env.cpython-36m-x86_64-linux-gnu.so CMakeFiles/env.dir/main.cpp.o CMakeFiles/env.dir/card.cpp.o CMakeFiles/env.dir/game.cpp.o CMakeFiles/env.dir/dancing_link.cpp.o -flto 
