@@ -1,5 +1,13 @@
 # RuleBasedModelV1
 
+### 环境
+
+根据系统替换`RuleBasedModelV1/game/r`与`RuleBasedModelV1/rule_utils/env`
+
+[于俊写的r](<https://github.com/deecamp2019-group20/bottleneck>)
+
+[Combinational Q-Learning论文中的env](https://github.com/qq456cvb/doudizhu-C)
+
 ### 基本思路
 
 1. 拆牌, 直接调用了[Combinational Q-Learning](https://github.com/qq456cvb/doudizhu-C)写的拆牌器, 即<10张暴力拆完, 否则用DLX搜100个方案, 不保证最优但是基本包括比较常见的方案.

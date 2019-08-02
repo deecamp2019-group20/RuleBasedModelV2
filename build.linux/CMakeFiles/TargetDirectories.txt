@@ -1,3 +1,0 @@
-/home/ygy/Desktop/doudizhu-C/build.linux/CMakeFiles/rebuild_cache.dir
-/home/ygy/Desktop/doudizhu-C/build.linux/CMakeFiles/env.dir
-/home/ygy/Desktop/doudizhu-C/build.linux/CMakeFiles/edit_cache.dir
