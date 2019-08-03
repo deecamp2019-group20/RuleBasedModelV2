@@ -1,12 +1,14 @@
 # RuleBasedModelV1
 
-### 环境
+## 环境
 
 根据系统替换`RuleBasedModelV1/game/r`与`RuleBasedModelV1/rule_utils/env`
 
-[于俊写的r](<https://github.com/deecamp2019-group20/bottleneck>)
+[于俊写的r](https://github.com/deecamp2019-group20/bottleneck)
 
 [Combinational Q-Learning论文中的env](https://github.com/qq456cvb/doudizhu-C)
+
+## Rule-based Model
 
 ### 基本思路
 
@@ -27,3 +29,11 @@
 
 - 坐庄打俩随机胜率.95+, 考虑到随机前期容易把自己牌打散, 大牌也是能出则出, 后期基本接不上, 意义不大
 - 出牌整体呈现小牌优先(价值小), 缺少对牌组的整体考虑(例如自己能否接上拿回牌权), 拆大牌和出大牌仍不够果断, 有时呈现奇怪方式?
+
+## MCTS Model
+
+[致波 & 博林 MCTS](https://github.com/deecamp2019-group20/DC2019-DDZ-MCTS)
+
+## Mixed Model
+
+继承了Rule和MCTS, 当场上最少手牌数大于7时采用Rule决策, 否则采用MCTS
