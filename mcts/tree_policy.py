@@ -1,4 +1,4 @@
-from .get_bestchild import get_bestchild
+from mcts.get_bestchild import get_bestchild
 
 
 def tree_policy(node, my_id):

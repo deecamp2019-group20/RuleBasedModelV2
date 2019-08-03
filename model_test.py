@@ -4,6 +4,7 @@ import numpy as np
 
 from rule_utils.rule_based_model import RuleBasedModel
 from mcts.mcts_model import MctsModel
+from mix_model.mix_model import MixModel
 
 
 class RandomModel(Agent):
@@ -15,20 +16,9 @@ class RandomModel(Agent):
         i = np.random.choice(len(valid_moves))
         move = valid_moves[i]
         # player i [手牌] // [出牌]
-        # print("Player {}".format(self.player_id), ' ', hand_card, end=' // ')
-        # print(Card.visual_card(move))
+        print("Player {}".format(self.player_id), ' ', hand_card, end=' // ')
+        print(Card.visual_card(move))
         return move, None
-
-
-class MixModel(RuleBasedModel, MctsModel):
-    def choose(self, state):
-        min_crads = min([sum(p.get_hand_card()) for p in self.game.players])
-        if min_crads > 7:
-            print("From RuleBaseModel: ")
-            return RuleBasedModel.choose(self, state)
-        else:
-            print("From MctsModel: ")
-            return MctsModel.choose(self, state)
 
 
 if __name__ == "__main__":

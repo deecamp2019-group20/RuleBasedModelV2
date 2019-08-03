@@ -1,6 +1,6 @@
 import numpy as np
 from game.engine import Card
-from .get_moves import get_moves
+from mcts.get_moves import get_moves
 from copy import copy
 
 class Node(object):
