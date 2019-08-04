@@ -27,6 +27,7 @@ if __name__ == "__main__":
     for i_episode in range(1000):
         game.game_reset()
         game.show()
+        game.players[0].set_new_game()
         for i in range(100):
             pid, state, cur_moves, cur_move, winner, info = game.step()
             # game.show()

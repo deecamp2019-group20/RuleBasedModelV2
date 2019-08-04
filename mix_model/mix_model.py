@@ -9,7 +9,7 @@ from mcts.default_policy import default_policy
 from mcts.backup import backup
 from mcts.tree import Node, State
 from mcts.get_moves import get_moves
-from mcts.get_bestchild import get_bestchild1
+from mcts.get_bestchild import get_bestchild
 import numpy as np
 from collections import Counter
 import time
@@ -31,6 +31,10 @@ class MixModel(Agent):
         super(MixModel, self).__init__(player_id)
         root = Node(None, None)
         self.current_node = root
+        self.new_game = False
+
+    def set_new_game(self):
+        self.new_game = True
 
     def choose(self, state):
         min_crads = min([sum(p.get_hand_card()) for p in self.game.players])
@@ -100,7 +104,7 @@ class MixModel(Agent):
         length = len(cards_out)
         #  判断是否定位到current_node的flag
         flag = 0
-        if length > 2:
+        if self.new_game is False:
             #  前两步对手选择的move
             out1 = self.list_to_card(cards_out[length-2][1])
             out2 = self.list_to_card(cards_out[length-1][1])
@@ -118,6 +122,7 @@ class MixModel(Agent):
 
         my_id = self.player_id
         if flag != 2:
+            self.new_game = False
             root = Node(None, None)
             self.current_node = root
 
@@ -142,7 +147,7 @@ class MixModel(Agent):
             expand_node = tree_policy(self.current_node, my_id)
             reward = default_policy(expand_node, my_id)
             backup(expand_node, reward)
-        best_next_node = get_bestchild1(self.current_node)
+        best_next_node = get_bestchild(self.current_node, my_id)
         move = best_next_node.get_state().action
         self.current_node = best_next_node
         new_move = self.card_to_list(move)
