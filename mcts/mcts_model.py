@@ -9,7 +9,7 @@ from mcts.default_policy import default_policy
 from mcts.backup import backup
 from mcts.tree import Node, State
 from mcts.get_moves import get_moves
-from mcts.get_bestchild import get_bestchild1
+from mcts.get_bestchild import get_bestchild
 import numpy as np
 from collections import Counter
 import time
@@ -69,7 +69,7 @@ class MctsModel(Agent):
             expand_node = tree_policy(self.current_node, my_id)
             reward = default_policy(expand_node, my_id)
             backup(expand_node, reward)
-        best_next_node = get_bestchild1(self.current_node)
+        best_next_node = get_bestchild(self.current_node, my_id)
         move = best_next_node.get_state().action
         self.current_node = best_next_node
         new_move = self.card_to_list(move)
