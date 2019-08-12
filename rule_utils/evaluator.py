@@ -40,7 +40,7 @@ for c in range(len(action_space_category)):
                 if char2val[a[i]] > 10:
                     v += 1.5 * (char2val[a[i]] - 10)  # 带牌为正加上
         elif c == 12:  # 12火箭
-            v = 12
+            v = 13
         elif c <= 14:  # 13四带二只, 14四带二对
             v = char2val[a[0]] - 10  # maxCard - 10
         assert v is not None
