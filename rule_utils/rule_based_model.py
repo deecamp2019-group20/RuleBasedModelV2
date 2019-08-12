@@ -27,34 +27,73 @@ class RuleBasedModel(Agent):
         # 根据对手剩余最少牌数决定每多一手牌的惩罚
         left_crads = [sum(p.get_hand_card()) for p in self.game.players]
         min_oppo_crads = min(left_crads[1], left_crads[2]) if self.player_id == 0 else left_crads[0]
-        round_penalty = 15 - 12 * min_oppo_crads / 20  # 惩罚值调整为与敌人最少手牌数负线性相关
+        round_penalty = 15 - 12 * min_oppo_crads / 20
+
+        if not last_move:
+            if self.player_id == 0:     #地主
+                round_penalty += 5
+            elif self.player_id == 1:   #地主下家
+                round_penalty += 4
+            else:   #地主上家
+                round_penalty += 3
+
+        if self.player_id == 2 and not last_move:   #队友没要地主牌
+            round_penalty += 5
+        if self.player_id == 1 and not last_move:   #地主没要队友牌
+            round_penalty -= 8
+        #TODO
+        # if self.player_id == 2 and              #队友出大牌就不压
+
+
         # 寻找最优出牌
         best_move = None
         best_comb = None
         max_value = -np.inf
         for i in range(len(combs)):
             # 手牌总分
-            total_value = sum([cards_value[x] for x in combs[i]])  # 计算牌组总分
-            small_num = 0  # 如果一手牌为小牌, 需要加上惩罚值, 所以要统计小牌数量
-            for j in range(0, len(combs[i])):  # 认为2, B, R是绝对大牌, 其他是小牌
-                if j > 0 and action_space[j][0] not in ["2", "R", "B"]:
-                    small_num += 1
-            total_value -= small_num * round_penalty  # 减去小牌的惩罚值
+            total_value = sum([cards_value[x] for x in combs[i]])
+            # small_num = 0
+            # for j in range(0, len(combs[i])):
+            #     if j > 0 and action_space[j][0] not in ["2", "R", "B"]:
+            #         small_num += 1
+            # total_value -= small_num * round_penalty
+            small_num = hand_card[-1]+hand_card[-2]+hand_card[-3]
+            small_num = (len(combs[i]) - small_num)
+            total_value -=  small_num * round_penalty
             for j in range(0, len(combs[i])):
                 # Pass 得分
-                if combs[i][j] == 0 and min_oppo_crads > 4:  # 如果pass更优选择pass, 但是这里导致经常pass, 所以在对手小于4张时能不pass就不pass
+                if combs[i][j] == 0 and min_oppo_crads > 8:
                     if total_value > max_value:
                         max_value = total_value
                         best_comb = combs[i]
                         best_move = 0
                 # 出牌得分
-                elif combs[i][j] > 0 and (fine_mask is None or fine_mask[i, j] == True):  # 枚举非pass且fine_mask为True的出牌
+                elif combs[i][j] > 0 and (fine_mask is None or fine_mask[i, j] == True):
                     # 特判只有一手
-                    if len(combs[i]) == 1 or len(combs[i]) == 2 and combs[i][0] == 0:  # 如果只剩一手牌了, 直接出完 (不加这句经常局末不出牌了)
+                    if len(combs[i]) == 1 or len(combs[i]) == 2 and combs[i][0] == 0:
                         max_value = np.inf
                         best_comb = combs[i]
                         best_move = combs[i][-1]
-                    move_value = total_value - cards_value[combs[i][j]] + round_penalty  # 出牌后的得分为减去价值, 返还惩罚值
+                        break
+
+                    #手里有火箭和另一手牌
+                    if len(combs[i]) == 3 and combs[i][0] == 0:
+                        if cards_value[combs[i][1]] == 12 or cards_value[combs[i][2]] == 12:
+                            return [0]*13 + [1,1], None
+
+                    #下家农民手里只有一张牌
+                    if self.player_id == 1 and sum(self.game.players[2].get_hand_card()) == 1:
+                        for i,j in enumerate(hand_card):
+                            if j != 0:
+                                tem = [0]*15
+                                tem[i] = 1
+                                return tem, None
+
+                    #TODO 地主只剩一张牌
+                    # if self.player_id != 0 and sum(self.game.players[0].get_hand_card()) == 1:
+                    #     if combs[i][j] <
+
+                    move_value = total_value - cards_value[combs[i][j]] + round_penalty
                     if move_value > max_value:
                         max_value = move_value
                         best_comb = combs[i]
