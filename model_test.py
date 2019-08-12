@@ -23,11 +23,11 @@ class RandomModel(Agent):
 
 if __name__ == "__main__":
     cnt = 0
-    game = Game([MixModel(0), RuleBasedModel(1), RuleBasedModel(2)])
+    game = Game([MctsModel(0), RuleBasedModel(1), RuleBasedModel(2)])
     for i_episode in range(1000):
         game.game_reset()
         game.show()
-        game.players[0].set_new_game()
+        # game.players[0].set_new_game()
         for i in range(100):
             pid, state, cur_moves, cur_move, winner, info = game.step()
             # game.show()

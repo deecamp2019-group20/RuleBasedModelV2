@@ -8,7 +8,7 @@ from mcts.tree_policy import tree_policy
 from mcts.default_policy import default_policy
 from mcts.backup import backup
 from mcts.tree import Node, State
-from mcts.get_moves import get_moves
+from mcts.get_moves_prune import get_moves
 from mcts.get_bestchild import get_bestchild
 import numpy as np
 from collections import Counter
