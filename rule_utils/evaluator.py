@@ -1,5 +1,5 @@
 # https://www.jianshu.com/p/9fb001daedcf
-from rule_utils.card import action_space_category
+from card import action_space_category
 
 char2val = {
     "3": 3, "4": 4, "5": 5, "6": 6,
@@ -7,6 +7,26 @@ char2val = {
     "J": 11, "Q": 12, "K": 13, "A": 14,
     "2": 15, "*": 16, "$": 17
 }
+
+dapai = []
+i = 9
+for i in range(11,15):
+    dapai.append(sorted(action_space_category[1][i]))
+for i in range(8,13):
+    dapai.append(sorted(action_space_category[2][i]))
+    dapai.append(sorted(action_space_category[3][i]))
+for i in range(112,182):
+    dapai.append(sorted(action_space_category[5][i]))
+for i in range(96,156):
+    dapai.append(sorted(action_space_category[6][i]))
+for a in action_space_category[7]:
+    if len(a) >= 7:
+        dapai.append(sorted(a))
+for i in [4,8,9,10,11,13,14]:
+    for a in action_space_category[i]:
+        dapai.append(sorted(a))
+
+
 cards_value = []
 for c in range(len(action_space_category)):
     for a in action_space_category[c]:
@@ -24,7 +44,7 @@ for c in range(len(action_space_category)):
                     v *= 1.4  # positive + 50%
             if c == 3 and v > 0:
                 if a == ['2','2','2']:
-                    v *= 1.1
+                    v *= 1
                 elif a == ['A','A','A']:
                     v *= 1.5
                 else:
@@ -40,7 +60,7 @@ for c in range(len(action_space_category)):
                 if a[:3] == ['2','2','2']:
                     v *= 1
                 elif a == ['A','A','A']:
-                    v *= 1.2
+                    v *= 1.3
                 else:
                     v *= 1.5  # 带牌比三条加得少
         elif c <= 9:  # 7顺子, 8连对, 9飞机
